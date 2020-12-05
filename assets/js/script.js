@@ -4,7 +4,7 @@ window.data = null;
 //     return 'Dialog text here.';
 //  };
 
-fetch('defaultData.json')
+fetch('data.json')
   .then(response => response.json())
   .then(data => {
       window.data = data;
@@ -209,3 +209,42 @@ function refreshDataTransaction() {
         tbody.appendChild(tr);
     });
 }
+
+document.getElementById('showAddTransactionModalButton').addEventListener('click', function(event) {
+    const lastID = window.data.transactions.slice(-1)[0].id;
+    document.forms['transactionAddForm']['idInput'].value = 'T' + (parseInt(lastID.substring(1)) + 1);
+
+    const itemCheckbox = document.querySelector('#transactionAddForm .itemsCheckbox');
+    window.data.items.forEach(element => {
+        const checkbox = document.createElement('div');
+        checkbox.classList.add('form-check', 'form-check-inline');
+        checkbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" value="${element.id}" id="checkbox${element.id}">
+            <label class="form-check-label" for="checkbox${element.id}">${element.name}</label>
+        `;
+        itemCheckbox.appendChild(checkbox);
+    });
+    $('#transactionAddModal').modal('show');
+});
+
+document.querySelector('#transactionAddModal .saveButton').addEventListener('click', function(event) {
+    const form = document.forms['transactionAddForm'];
+    const listItemsCheckbox = document.querySelectorAll('#transactionAddForm .itemsCheckbox input[type=checkbox]');
+
+    const newData = {
+        id : form['idInput'].value,
+        itemsId : []
+    };
+
+    listItemsCheckbox.forEach(element => {
+        if(element.checked) {
+            newData.itemsId.push(element.value);
+        } 
+    });
+
+    window.data.transactions.push(newData);
+
+    refreshData();
+    $('#transactionAddModal').modal('hide');
+    showToast('Berhasil menambahkan transaksi');
+});
