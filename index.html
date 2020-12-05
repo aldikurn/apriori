@@ -83,15 +83,15 @@
                 <form id="ruleEditForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" id="idInput" disabled>
+                    <input type="text" class="form-control" name="idInput" disabled>
                   </div>
                   <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" id="nameInput">
+                    <input type="text" class="form-control" name="nameInput">
                   </div>
                   <div class="form-group">
                     <label>Minimum Support</label>
-                    <input type="number" class="form-control" id="minimumSupportInput">
+                    <input type="number" class="form-control" name="minimumSupportInput">
                   </div>
                 </form>
               </div>
@@ -134,11 +134,11 @@
                 <form id="itemAddForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" id="idInput">
+                    <input type="text" class="form-control" name="idInput">
                   </div>
                   <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" id="nameInput">
+                    <input type="text" class="form-control" name="nameInput">
                   </div>
                 </form>
               </div>
@@ -163,11 +163,11 @@
                 <form id="itemEditForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" id="idInput" disabled>
+                    <input type="text" class="form-control" name="idInput" disabled>
                   </div>
                   <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" id="nameInput">
+                    <input type="text" class="form-control" name="nameInput">
                   </div>
                 </form>
               </div>
@@ -229,7 +229,7 @@
                 <form id="transactionAddForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" id="idInput">
+                    <input type="text" class="form-control" name="idInput">
                   </div>
                   <div class="form-group">
                     <label>Pilih Barang</label>
@@ -260,7 +260,7 @@
                 <form id="transactionEditForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" id="idInput" disabled>
+                    <input type="text" class="form-control" name="idInput" disabled>
                   </div>
                   <div class="form-group">
                     <label>Pilih Barang</label>
@@ -320,6 +320,12 @@
                 <!-- Itemset 1 Table -->
                 <div class="row justify-content-center">
                   <div class="col-12">
+                    <div class="form-check" style="user-select: none;">
+                      <input class="form-check-input" type="checkbox" value="" id="filterMinimumSupportItemset1">
+                      <label class="form-check-label" for="filterMinimumSupportItemset1">
+                        Filter by minimum support (<span id="minimumSupportItemset1Label"></span>)
+                      </label>
+                    </div>
                     <table id="itemset1-table" class="table table-hover">
                       <thead>
                         <th>Rule / Kombinasi</th>
@@ -332,7 +338,25 @@
                 </div>
               </div>
               <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                <p>Contoh itemset 2</p>
+                <!-- Itemset 2 Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="filterMinimumSupportItemset2">
+                      <label class="form-check-label" for="filterMinimumSupportItemset2">
+                        Filter by minimum support (<span id="minimumSupportItemset2Label"></span>)
+                      </label>
+                    </div>
+                    <table id="itemset2-table" class="table table-hover">
+                      <thead>
+                        <th>Rule / Kombinasi</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Support</th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
               <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                 <p>Contoh itemset 3</p>

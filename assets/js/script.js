@@ -28,6 +28,8 @@ function refreshData() {
     refreshDataRule();
     refreshDataitem();
     refreshDataTransaction();
+    refreshItemset1();
+    refreshItemset2();
 }
 
 function getIndex(id, array) {
@@ -37,6 +39,23 @@ function getIndex(id, array) {
 function showToast(message) {
     document.getElementById('toastMessage').textContent = message;
     $('#toastNotification').toast('show');
+}
+
+function getTotalTransaction(itemsId) {
+    let count = 0;
+    window.data.transactions.forEach(element => {
+        let found = true;
+        for(i = 0; i < itemsId.length; i++) {
+            if(!element.itemsId.includes(itemsId[i])) {
+                found = false;
+                break;
+            }
+        }
+        if(found) {
+            count++;
+        }
+    });
+    return count;
 }
 
 // Rule
@@ -343,4 +362,148 @@ document.querySelector('#transactionDeleteModal .deleteButton').addEventListener
     refreshData();
     $('#transactionDeleteModal').modal('hide');
     showToast('Berhasil menghapus transaksi');
+});
+
+function getItemset1() {
+    let allItemset1 = [];
+    let selectedItemset1 = [];
+
+    window.data.items.forEach(element => {
+        let tempTotalTransaction = getTotalTransaction([element.id]);
+        let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+
+        let obj = {
+            ids : [element.id],
+            totalTransaction : tempTotalTransaction,
+            support : tempSupport
+        }
+        
+        allItemset1.push(obj);
+        if(tempSupport >= window.data.rules[0].minimumSupport) {
+            selectedItemset1.push(obj);
+        }
+    });
+
+    return {
+        all : allItemset1,
+        selected : selectedItemset1
+    };
+}
+
+// Itemset 1
+function refreshItemset1() {
+    document.getElementById('minimumSupportItemset1Label').textContent = window.data.rules[0].minimumSupport + '%';
+    const tbody = document.getElementById('itemset1-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+
+    const itemset1 = getItemset1();
+    let data = null;
+    if(document.getElementById('filterMinimumSupportItemset1').checked) {
+        data = itemset1.selected;
+    } else {
+        data = itemset1.all;
+    }
+
+    data.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction}
+            </td>
+            <td>
+                ${v.support}%
+            </td>
+        `;
+        if(v.support >= window.data.rules[0].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('filterMinimumSupportItemset1').addEventListener('change', function(event) {
+    refreshItemset1();
+});
+
+// Itemset 2
+function getItemset2() {
+    let allItemset2 = [];
+    let selectedItemset2 = [];
+
+    const selectedItemset1 = getItemset1().selected;
+    selectedItemset1.forEach(val1 => {
+        window.data.items.forEach(val2 => {
+            if(val1.ids[0] !== val2.id) {
+                let tempIds = val1.ids.slice(0);
+                tempIds.push(val2.id);
+                let tempTotalTransaction = getTotalTransaction([val1.ids[0], val2.id]);
+                let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+
+                let obj = {
+                    ids : tempIds,
+                    totalTransaction : tempTotalTransaction,
+                    support : tempSupport
+                }
+
+                allItemset2.push(obj);
+                if(tempSupport >= window.data.rules[1].minimumSupport) {
+                    selectedItemset2.push(obj);
+                }
+            }
+        })
+    });
+
+    return {
+        all : allItemset2,
+        selected : selectedItemset2
+    };
+}
+
+
+
+
+
+
+
+
+
+
+function refreshItemset2() {
+    document.getElementById('minimumSupportItemset2Label').textContent = window.data.rules[1].minimumSupport + '%';
+    const tbody = document.getElementById('itemset2-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+    
+    const itemset2 = getItemset2();
+    let data = null;
+    if(document.getElementById('filterMinimumSupportItemset2').checked) {
+        data = itemset2.selected;
+    } else {
+        data = itemset2.all;
+    }
+
+    data.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction}
+            </td>
+            <td>
+                ${v.support}%
+            </td>
+        `;
+        if(v.support >= window.data.rules[1].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('filterMinimumSupportItemset2').addEventListener('change', function(event) {
+    refreshItemset2();
 });
