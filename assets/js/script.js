@@ -145,11 +145,6 @@ function editItem(id) {
     selectedItemID = id;
     index = getIndex(selectedItemID, window.data.items);
 
-    if(form['idInput'].value === '' || form['nameInput'].value === '') {
-        showToast('Data tidak lengkap');
-        return;
-    }
-
     itemEditForm['idInput'].value = window.data.items[index].id;
     itemEditForm['nameInput'].value = window.data.items[index].name;
 
@@ -158,6 +153,12 @@ function editItem(id) {
 
 document.querySelector('#itemEditModal .saveButton').addEventListener('click', function(event) {
     index = getIndex(selectedItemID, window.data.items);
+
+    const form = document.forms['itemEditForm'];
+    if(form['idInput'].value === '' || form['nameInput'].value === '') {
+        showToast('Data tidak lengkap');
+        return;
+    }
 
     window.data.items[index].id = itemEditForm['idInput'].value;
     window.data.items[index].name = itemEditForm['nameInput'].value;
@@ -327,4 +328,19 @@ document.querySelector('#transactionEditModal .saveButton').addEventListener('cl
     refreshData();
     $('#transactionEditModal').modal('hide');
     showToast('Berhasil mengubah transaksi');
+});
+
+function deleteTransaction(id) {
+    selectedTransactionID = id;
+    document.getElementById('transactionIDToDelete').textContent = selectedTransactionID;
+    $('#transactionDeleteModal').modal('show');
+}
+
+document.querySelector('#transactionDeleteModal .deleteButton').addEventListener('click', function(event) {
+    index = getIndex(selectedTransactionID, window.data.transactions);
+    window.data.transactions.splice(index, 1);
+
+    refreshData();
+    $('#transactionDeleteModal').modal('hide');
+    showToast('Berhasil menghapus transaksi');
 });
