@@ -231,6 +231,22 @@ document.querySelector('#transactionAddModal .saveButton').addEventListener('cli
     const form = document.forms['transactionAddForm'];
     const listItemsCheckbox = document.querySelectorAll('#transactionAddForm .itemsCheckbox input[type=checkbox]');
 
+    let isValid = false;
+    if(form['idInput'].value === '') {
+        isValid = false;
+        showToast('Data tidak lengkap');
+        return;
+    }
+    listItemsCheckbox.forEach(element => {
+        if(element.checked) {
+            isValid = true;
+        }
+    });
+    if(!isValid) {
+        showToast('Data tidak lengkap');
+        return;
+    }
+
     const newData = {
         id : form['idInput'].value,
         itemsId : []
