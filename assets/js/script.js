@@ -202,8 +202,8 @@ function refreshDataTransaction() {
                 ${element.itemsId}
             </td>
             <td>
-                <button onclick="editItem('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
-                <button onclick="deleteItem('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
+                <button onclick="editTransaction('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
+                <button onclick="deleteTransaction('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -215,6 +215,7 @@ document.getElementById('showAddTransactionModalButton').addEventListener('click
     document.forms['transactionAddForm']['idInput'].value = 'T' + (parseInt(lastID.substring(1)) + 1);
 
     const itemCheckbox = document.querySelector('#transactionAddForm .itemsCheckbox');
+    itemCheckbox.innerHTML = '';
     window.data.items.forEach(element => {
         const checkbox = document.createElement('div');
         checkbox.classList.add('form-check', 'form-check-inline');
@@ -263,4 +264,67 @@ document.querySelector('#transactionAddModal .saveButton').addEventListener('cli
     refreshData();
     $('#transactionAddModal').modal('hide');
     showToast('Berhasil menambahkan transaksi');
+});
+
+function editTransaction(id) {
+    const itemCheckbox = document.querySelector('#transactionEditForm .itemsCheckbox');
+    itemCheckbox.innerHTML = '';
+    window.data.items.forEach(element => {
+        const checkbox = document.createElement('div');
+        checkbox.classList.add('form-check', 'form-check-inline');
+        checkbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" value="${element.id}" id="checkbox${element.id}">
+            <label class="form-check-label" for="checkbox${element.id}">${element.name}</label>
+        `;
+        itemCheckbox.appendChild(checkbox);
+    });
+
+    selectedTransactionID = id;
+    const index = getIndex(selectedTransactionID, window.data.transactions);
+
+    const form = document.forms['transactionEditForm'];
+    form['idInput'].value = window.data.transactions[index].id;
+
+    window.data.transactions[index].itemsId.forEach(v => {
+        document.querySelector('#transactionEditForm #checkbox' + v).checked = true;
+    });
+
+    $('#transactionEditModal').modal('show');
+}
+
+document.querySelector('#transactionEditModal .saveButton').addEventListener('click', function(event) {
+    const form = document.forms['transactionEditForm'];
+    const listItemsCheckbox = document.querySelectorAll('#transactionEditForm .itemsCheckbox input[type=checkbox]');
+
+    let isValid = false;
+    if(form['idInput'].value === '') {
+        isValid = false;
+        showToast('Data tidak lengkap');
+        return;
+    }
+    listItemsCheckbox.forEach(element => {
+        if(element.checked) {
+            isValid = true;
+        }
+    });
+    if(!isValid) {
+        showToast('Data tidak lengkap');
+        return;
+    }
+
+    const itemsId  = [];
+    listItemsCheckbox.forEach(element => {
+        if(element.checked) {
+            itemsId.push(element.value);
+        }
+    });
+
+    const index = getIndex(selectedTransactionID, window.data.transactions);
+
+    window.data.transactions[index].id = form['idInput'].value;
+    window.data.transactions[index].itemsId = itemsId;
+
+    refreshData();
+    $('#transactionEditModal').modal('hide');
+    showToast('Berhasil mengubah transaksi');
 });

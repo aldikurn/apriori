@@ -14,7 +14,7 @@
   <div class="container" aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
 
     <div style="position: fixed; top: 1em; right: 1em; z-index: 9999;">
-      <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="1300">
+      <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
         <div class="toast-header">
           <strong class="mr-auto">Notifikasi</strong>
           <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -225,6 +225,36 @@
               </div>
               <div class="modal-body">
                 <form id="transactionAddForm">
+                  <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" class="form-control" id="idInput">
+                  </div>
+                  <div class="form-group">
+                    <label>Pilih Barang</label>
+                    <div class="itemsCheckbox"></div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-success saveButton">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction Edit Modal= -->
+        <div class="modal fade" id="transactionEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Transaksi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="transactionEditForm">
                   <div class="form-group">
                     <label>ID</label>
                     <input type="text" class="form-control" id="idInput">
