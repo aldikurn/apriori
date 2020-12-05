@@ -1,0 +1,226 @@
+{
+    "rules" : [
+        {
+            "id" : "R1",
+            "name" : "Itemset 1",
+            "minimumSupport" : 25
+        },
+        {
+            "id" : "R2",
+            "name" : "Itemset 2",
+            "minimumSupport" : 15
+        },
+        {
+            "id" : "R3",
+            "name" : "Itemset 3",
+            "minimumSupport" : 10
+        }
+    ],
+
+    "items" : [
+        {
+            "id" : "a1",
+            "name" : "Sari Roti"
+        },
+        {
+            "id" : "A2",
+            "name" : "Roti Sisir"
+        },
+        {
+            "id" : "A3",
+            "name" : "Roti Bantal"
+        },
+        {
+            "id" : "A4",
+            "name" : "Teh botol"
+        },
+        {
+            "id" : "A5",
+            "name" : "Chocolatos"
+        },
+        {
+            "id" : "A6",
+            "name" : "Susu Indomilk"
+        },
+        {
+            "id" : "A7",
+            "name" : "Susu Ultramilk"
+        },
+        {
+            "id" : "A8",
+            "name" : "GreenTea"
+        },
+        {
+            "id" : "A9",
+            "name" : "Wafer"
+        },
+        {
+            "id" : "A10",
+            "name" : "Qtela"
+        },
+        {
+            "id" : "A11",
+            "name" : "Roti Sisir"
+        },
+        {
+            "id" : "A12",
+            "name" : "Mie Sedap"
+        },
+        {
+            "id" : "A13",
+            "name" : "Kecap"
+        },
+        {
+            "id" : "A14",
+            "name" : "Saos"
+        },
+        {
+            "id" : "A15",
+            "name" : "Susu Dancow"
+        },
+        {
+            "id" : "A16",
+            "name" : "Nutrijel"
+        },
+        {
+            "id" : "A17",
+            "name" : "Jely"
+        },
+        {
+            "id" : "A18",
+            "name" : "Taro"
+        },
+        {
+            "id" : "A19",
+            "name" : "Handbody Lotion"
+        },
+        {
+            "id" : "A20",
+            "name" : "Ponds"
+        },
+        {
+            "id" : "A21",
+            "name" : "Indomie"
+        },
+        {
+            "id" : "A22",
+            "name" : "Clean & Clear"
+        },
+        {
+            "id" : "A23",
+            "name" : "Nivea"
+        },
+        {
+            "id" : "A24",
+            "name" : "Rinso"
+        },
+        {
+            "id" : "A25",
+            "name" : "Rejoice"
+        },
+        {
+            "id" : "A26",
+            "name" : "Pantene"
+        },
+        {
+            "id" : "A27",
+            "name" : "Pepsodent"
+        },
+        {
+            "id" : "A28",
+            "name" : "Bimoli"
+        },
+        {
+            "id" : "A29",
+            "name" : "Tepung Terigu"
+        },
+        {
+            "id" : "A30",
+            "name" : "Gula"
+        }
+    ],
+
+    "transactions" : [
+        {
+            "id" : "t1",
+            "itemsId" : ["A1", "A2", "A3", "A4", "A21", "A26"]
+        },
+        {
+            "id" : "t2",
+            "itemsId" : ["A1", "A5", "A3", "A22", "A2"]
+        },
+        {
+            "id" : "t3",
+            "itemsId" : ["A6", "A5", "A3", "A4", "A24"]
+        },
+        {
+            "id" : "t4",
+            "itemsId" : ["A2", "A4", "A8", "A7", "A11", "A18"]
+        },
+        {
+            "id" : "t5",
+            "itemsId" : ["A1", "A3", "A9", "A7", "A23"]
+        },
+        {
+            "id" : "t6",
+            "itemsId" : ["A10", "A4", "A5", "A11", "A12"]
+        },
+        {
+            "id" : "t7",
+            "itemsId" : ["A1", "A6", "A11", "A3", "A4"]
+        },
+        {
+            "id" : "t8",
+            "itemsId" : ["A8", "A12", "A10", "A1"]
+        },
+        {
+            "id" : "t9",
+            "itemsId" : ["A2", "A3", "A9", "A10", "A20"]
+        },
+        {
+            "id" : "t10",
+            "itemsId" : ["A1", "A6", "A8", "A10", "A13", "A16"]
+        },
+        {
+            "id" : "t11",
+            "itemsId" : ["A2", "A4", "A8", "A10", "A13", "A16"]
+        },
+        {
+            "id" : "t12",
+            "itemsId" : ["A13", "A14", "A5", "A17", "A28"]
+        },
+        {
+            "id" : "t13",
+            "itemsId" : ["A15", "A16", "A17", "A12", "A20"]
+        },
+        {
+            "id" : "t14",
+            "itemsId" : ["A16", "A14", "A13", "A17", "A21"]
+        },
+        {
+            "id" : "t15",
+            "itemsId" : ["A11", "A6", "A3", "A4", "A5"]
+        },
+        {
+            "id" : "t16",
+            "itemsId" : ["A4", "A12", "A14", "A2", "A7"]
+        },
+        {
+            "id" : "t17",
+            "itemsId" : ["A18", "A20", "A21", "A11", "A15"]
+        },
+        {
+            "id" : "t18",
+            "itemsId" : ["A19", "A22", "A24", "A26", "A30"]
+        },
+        {
+            "id" : "t19",
+            "itemsId" : ["A20", "A23", "A25", "A13", "A29"]
+        },
+        {
+            "id" : "t20",
+            "itemsId" : ["A13", "A26", "A27", "A19", "A30"]
+        }
+    ]
+
+}
