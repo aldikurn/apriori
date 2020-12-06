@@ -28,19 +28,19 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <a class="nav-link active" id="rule-tab" data-toggle="tab" href="#rule" role="tab" aria-controls="rule"
-          aria-selected="true">Rule</a>
+          aria-selected="true">Rule <span id="totalRule" class="badge badge-primary"></span></a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="items-tab" data-toggle="tab" href="#items" role="tab" aria-controls="items"
-          aria-selected="false">Data Barang </a>
+          aria-selected="false">Data Barang <span id="totalItems" class="badge badge-primary"></span></a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="transaction-tab" data-toggle="tab" href="#transaction" role="tab"
-          aria-controls="transaction" aria-selected="false">Transaksi</a>
+          aria-controls="transaction" aria-selected="false">Transaksi <span id="totalTransaction" class="badge badge-primary"></span></a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="aturan-asosiasi-tab" data-toggle="tab" href="#aturan-asosiasi" role="tab"
-          aria-controls="aturan-asosiasi" aria-selected="false">Aturan Asosiasi</a>
+          aria-controls="aturan-asosiasi" aria-selected="false"></span>Aturan Asosiasi</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="hitung-apriori-tab" data-toggle="tab" href="#hitung-apriori" role="tab"
@@ -134,7 +134,7 @@
                 <form id="itemAddForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" name="idInput">
+                    <input type="text" class="form-control" name="idInput" disabled>
                   </div>
                   <div class="form-group">
                     <label>Name</label>
@@ -229,7 +229,7 @@
                 <form id="transactionAddForm">
                   <div class="form-group">
                     <label>ID</label>
-                    <input type="text" class="form-control" name="idInput">
+                    <input type="text" class="form-control" name="idInput" disabled>
                   </div>
                   <div class="form-group">
                     <label>Pilih Barang</label>
@@ -305,29 +305,36 @@
         <div class="row mt-1 justify-content-center">
           <div class="col-2">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                aria-controls="v-pills-home" aria-selected="true">Itemset 1</a>
-              <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                aria-controls="v-pills-profile" aria-selected="false">Itemset 2</a>
-              <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-                aria-controls="v-pills-messages" aria-selected="false">Itemset 3</a>
+              <a class="nav-link active" id="v-pills-itemset1-tab" data-toggle="pill" href="#v-pills-itemset1" role="tab"
+                aria-controls="v-pills-itemset1" aria-selected="true">Itemset 1 <span id="itemset1SelectedCombination" class="badge badge-light">0</span></a>
+              <a class="nav-link" id="v-pills-itemset2-tab" data-toggle="pill" href="#v-pills-itemset2" role="tab"
+                aria-controls="v-pills-itemset2" aria-selected="false">Itemset 2 <span id="itemset2SelectedCombination" class="badge badge-primary">0</span></a>
+              <a class="nav-link" id="v-pills-itemset3-tab" data-toggle="pill" href="#v-pills-itemset3" role="tab"
+                aria-controls="v-pills-itemset3" aria-selected="false">Itemset 3 <span id="itemset2SelectedCombination" class="badge badge-primary">0</span></a>
             </div>
           </div>
           <div class="col-8">
             <div class="tab-content" id="v-pills-tabContent">
-              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                aria-labelledby="v-pills-home-tab">
+              <div class="tab-pane fade show active" id="v-pills-itemset1" role="tabpanel"
+                aria-labelledby="v-pills-itemset1-tab">
                 <!-- Itemset 1 Table -->
                 <div class="row justify-content-center">
                   <div class="col-12">
-                    <div class="form-check" style="user-select: none;">
-                      <input class="form-check-input" type="checkbox" value="" id="filterMinimumSupportItemset1">
-                      <label class="form-check-label" for="filterMinimumSupportItemset1">
-                        Filter by minimum support (<span id="minimumSupportItemset1Label"></span>)
-                      </label>
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total Kombinasi : 
+                        <span id="itemset1AllCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="itemset1MinimumSupportFilter">
+                        <label class="form-check-label" for="itemset1MinimumSupportFilter">
+                          Filter by minimum support (<span id="itemset1MinimumSupportLabel"></span>)
+                        </label>
+                      </div>
                     </div>
                     <table id="itemset1-table" class="table table-hover">
                       <thead>
+                        <th>No.</th>
                         <th>Rule / Kombinasi</th>
                         <th>Jumlah Transaksi</th>
                         <th>Support</th>
@@ -337,15 +344,25 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+              <div class="tab-pane fade" id="v-pills-itemset2" role="tabpanel" aria-labelledby="v-pills-itemset2-tab">
                 <!-- Itemset 2 Table -->
                 <div class="row justify-content-center">
                   <div class="col-12">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="filterMinimumSupportItemset2">
-                      <label class="form-check-label" for="filterMinimumSupportItemset2">
-                        Filter by minimum support (<span id="minimumSupportItemset2Label"></span>)
-                      </label>
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total Kombinasi : 
+                        <span id="itemset2AllCombination"></span>
+                      </span>
+                      <span>
+                        Kombinasi Terpilih : 
+                        <span id="itemset2SelectedCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="itemset2MinimumSupportFilter">
+                        <label class="form-check-label" for="itemset2MinimumSupportFilter">
+                          Filter by minimum support (<span id="itemset2MinimumSupportLabel"></span>)
+                        </label>
+                      </div>
                     </div>
                     <table id="itemset2-table" class="table table-hover">
                       <thead>
@@ -358,8 +375,36 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                <p>Contoh itemset 3</p>
+              <div class="tab-pane fade" id="v-pills-itemset3" role="tabpanel" aria-labelledby="v-pills-itemset3-tab">
+                <!-- Itemset 3 Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total Kombinasi : 
+                        <span id="itemset3AllCombination"></span>
+                      </span>
+                      <span>
+                        Kombinasi Terpilih : 
+                        <span id="itemset3SelectedCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="itemset3MinimumSupportFilter">
+                        <label class="form-check-label" for="itemset3MinimumSupportFilter">
+                          Filter by minimum support (<span id="itemset3MinimumSupportLabel"></span>)
+                        </label>
+                      </div>
+                    </div>
+                    <table id="itemset3-table" class="table table-hover">
+                      <thead>
+                        <th>Rule / Kombinasi</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Support</th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -370,13 +415,17 @@
         <div class="col-sm-4">
           <div class="form-group">
             <label><strong>Import Data</strong></label>
-            <input type="file" id="import-input" class="form-control-file mb-2" accept="application/JSON">
-            <button id="import" class="btn btn-outline-primary">Load</button>
+            <input id="import" type="file" id="import-input" class="form-control-file mb-2" accept="application/JSON">
+            <button id="loadImport" class="btn btn-outline-primary">Load</button>
           </div>
 
           <div class="form-group">
             <label><strong>Export Data</strong></label>
             <button id="export" class="btn btn-outline-primary d-block">Export</button>
+          </div>
+          <div class="form-group">
+            <label><strong>Reset Data</strong></label>
+            <button id="reset" class="btn btn-outline-danger d-block">Reset</button>
           </div>
         </div>
       </div>

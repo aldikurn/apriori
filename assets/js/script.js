@@ -30,6 +30,7 @@ function refreshData() {
     refreshDataTransaction();
     refreshItemset1();
     refreshItemset2();
+    refreshItemset3();
 }
 
 function getIndex(id, array) {
@@ -63,6 +64,7 @@ let selectedRuleID = null;
 let ruleEditForm = document.forms['ruleEditForm'];
 
 function refreshDataRule() {
+    // document.getElementById('totalRule').textContent = window.data.rules.length; badge total rule
     const tbody = document.getElementById('rules-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
     window.data.rules.forEach(element => {
@@ -103,9 +105,9 @@ document.querySelector('#ruleEditModal .saveButton').addEventListener('click', f
     window.data.rules[index].name = ruleEditForm['nameInput'].value;
     window.data.rules[index].minimumSupport = parseInt(ruleEditForm['minimumSupportInput'].value);
 
-    refreshData();
     $('#ruleEditModal').modal('hide');
     showToast('Berhasil mengubah rule');
+    refreshData();
 });
 
 
@@ -114,6 +116,7 @@ let selectedItemID = null;
 let itemEditForm = document.forms['itemEditForm'];
 
 function refreshDataitem() {
+    document.getElementById('totalItems').textContent = window.data.items.length;
     const tbody = document.getElementById('items-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
     window.data.items.forEach(element => {
@@ -135,8 +138,12 @@ function refreshDataitem() {
 }
 
 document.getElementById('showAddItemModalButton').addEventListener('click', function(event) {
-    const lastID = window.data.items.slice(-1)[0].id;
-    document.forms['itemAddForm']['idInput'].value = 'A' + (parseInt(lastID.substring(1)) + 1);
+    if(window.data.items.length > 0) {
+        const lastID = window.data.items.slice(-1)[0].id;
+        document.forms['itemAddForm']['idInput'].value = 'A' + (parseInt(lastID.substring(1)) + 1);
+    } else {
+        document.forms['itemAddForm']['idInput'].value = 'A1';
+    }
     $('#itemAddModal').modal('show');
 });
 
@@ -155,9 +162,9 @@ document.querySelector('#itemAddModal .saveButton').addEventListener('click', fu
 
     window.data.items.push(newData);
 
-    refreshData();
     $('#itemAddModal').modal('hide');
     showToast('Berhasil menambahkan barang');
+    refreshData();
 });
 
 function editItem(id) {
@@ -182,9 +189,9 @@ document.querySelector('#itemEditModal .saveButton').addEventListener('click', f
     window.data.items[index].id = itemEditForm['idInput'].value;
     window.data.items[index].name = itemEditForm['nameInput'].value;
 
-    refreshData();
     $('#itemEditModal').modal('hide');
     showToast('Berhasil mengubah barang');
+    refreshData();
 });
 
 function deleteItem(id) {
@@ -198,18 +205,18 @@ document.querySelector('#itemDeleteModal .deleteButton').addEventListener('click
     index = getIndex(selectedItemID, window.data.items);
     window.data.items.splice(index, 1);
 
-    refreshData();
     $('#itemDeleteModal').modal('hide');
     showToast('Berhasil menghapus barang');
+    refreshData();
 });
 
 
 
 // Transaksi
 let selectedTransactionID = null;
-// let transactionEditForm = document.forms['transactionEditForm'];
 
 function refreshDataTransaction() {
+    document.getElementById('totalTransaction').textContent = window.data.transactions.length;
     const tbody = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
     window.data.transactions.forEach(element => {
@@ -231,8 +238,12 @@ function refreshDataTransaction() {
 }
 
 document.getElementById('showAddTransactionModalButton').addEventListener('click', function(event) {
-    const lastID = window.data.transactions.slice(-1)[0].id;
-    document.forms['transactionAddForm']['idInput'].value = 'T' + (parseInt(lastID.substring(1)) + 1);
+    if(window.data.transactions.length > 0) {
+        const lastID = window.data.transactions.slice(-1)[0].id;
+        document.forms['transactionAddForm']['idInput'].value = 'T' + (parseInt(lastID.substring(1)) + 1);
+    } else {
+        document.forms['transactionAddForm']['idInput'].value = 'T1';
+    }
 
     const itemCheckbox = document.querySelector('#transactionAddForm .itemsCheckbox');
     itemCheckbox.innerHTML = '';
@@ -281,9 +292,9 @@ document.querySelector('#transactionAddModal .saveButton').addEventListener('cli
 
     window.data.transactions.push(newData);
 
-    refreshData();
     $('#transactionAddModal').modal('hide');
     showToast('Berhasil menambahkan transaksi');
+    refreshData();
 });
 
 function editTransaction(id) {
@@ -344,9 +355,9 @@ document.querySelector('#transactionEditModal .saveButton').addEventListener('cl
     window.data.transactions[index].id = form['idInput'].value;
     window.data.transactions[index].itemsId = itemsId;
 
-    refreshData();
     $('#transactionEditModal').modal('hide');
     showToast('Berhasil mengubah transaksi');
+    refreshData();
 });
 
 function deleteTransaction(id) {
@@ -359,9 +370,9 @@ document.querySelector('#transactionDeleteModal .deleteButton').addEventListener
     index = getIndex(selectedTransactionID, window.data.transactions);
     window.data.transactions.splice(index, 1);
 
-    refreshData();
     $('#transactionDeleteModal').modal('hide');
     showToast('Berhasil menghapus transaksi');
+    refreshData();
 });
 
 function getItemset1() {
@@ -370,7 +381,7 @@ function getItemset1() {
 
     window.data.items.forEach(element => {
         let tempTotalTransaction = getTotalTransaction([element.id]);
-        let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+        let tempSupport = parseInt(tempTotalTransaction / window.data.transactions.length * 100);
 
         let obj = {
             ids : [element.id],
@@ -390,23 +401,47 @@ function getItemset1() {
     };
 }
 
+// // v-pills-itemset-1-3
+let itemsetNavPills = document.querySelectorAll('#hitung-apriori .nav-link');
+itemsetNavPills.forEach(element => {
+    element.addEventListener('click', function(event) {
+        itemsetNavPills.forEach(v => {
+            v.getElementsByClassName('badge')[0].classList.remove('badge-light');
+            v.getElementsByClassName('badge')[0].classList.add('badge-primary');
+        });
+
+        element.getElementsByClassName('badge')[0].classList.remove('badge-primary');
+        element.getElementsByClassName('badge')[0].classList.add('badge-light');
+    });
+});
+
 // Itemset 1
+let itemset = null;
 function refreshItemset1() {
-    document.getElementById('minimumSupportItemset1Label').textContent = window.data.rules[0].minimumSupport + '%';
+    itemset1 = getItemset1();
+
+    document.getElementById('itemset1AllCombination').textContent = itemset1.all.length;
+    document.getElementById('itemset1SelectedCombination').textContent = itemset1.selected.length;
+    document.getElementById('itemset1MinimumSupportLabel').textContent = window.data.rules[0].minimumSupport + '%';
+
     const tbody = document.getElementById('itemset1-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
 
-    const itemset1 = getItemset1();
     let data = null;
-    if(document.getElementById('filterMinimumSupportItemset1').checked) {
+    if(document.getElementById('itemset1MinimumSupportFilter').checked) {
         data = itemset1.selected;
     } else {
         data = itemset1.all;
     }
 
+    let number = 0;
     data.forEach(v => {
+        number++;
         const tr = document.createElement('tr');
         tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
             <td>
                 ${v.ids}
             </td>
@@ -424,7 +459,7 @@ function refreshItemset1() {
     });
 }
 
-document.getElementById('filterMinimumSupportItemset1').addEventListener('change', function(event) {
+document.getElementById('itemset1MinimumSupportFilter').addEventListener('change', function(event) {
     refreshItemset1();
 });
 
@@ -433,8 +468,27 @@ function getItemset2() {
     let allItemset2 = [];
     let selectedItemset2 = [];
 
-    const selectedItemset1 = getItemset1().selected;
-    selectedItemset1.forEach(val1 => {
+    // for(i = 0; i < itemset1.selected.length; i++) {
+    //     for(j = window.data.items.findIndex(x => x.id === itemset1.selected[i].ids[0]) + 1; i < window.data.items.length; j++) {
+    //         let tempIds = itemset1.selected[i].ids.slice(0);
+    //         tempIds.push(window.data.items[j].id);
+    //         let tempTotalTransaction = getTotalTransaction([itemset1.selected[i].ids[0], window.data.items[j].id]);
+    //         let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+
+    //         let obj = {
+    //             ids : tempIds,
+    //             totalTransaction : tempTotalTransaction,
+    //             support : tempSupport
+    //         }
+
+    //         allItemset2.push(obj);
+    //         if(tempSupport >= window.data.rules[1].minimumSupport) {
+    //             selectedItemset2.push(obj);
+    //         }
+    //     }
+    // }
+
+    itemset1.selected.forEach(val1 => {
         window.data.items.forEach(val2 => {
             if(val1.ids[0] !== val2.id) {
                 let tempIds = val1.ids.slice(0);
@@ -462,31 +516,32 @@ function getItemset2() {
     };
 }
 
-
-
-
-
-
-
-
-
-
+let itemset2 = null;
 function refreshItemset2() {
-    document.getElementById('minimumSupportItemset2Label').textContent = window.data.rules[1].minimumSupport + '%';
+    itemset2 = getItemset2();
+
+    document.getElementById('itemset2AllCombination').textContent = itemset2.all.length;
+    document.getElementById('itemset2SelectedCombination').textContent = itemset2.selected.length;
+    document.getElementById('itemset2MinimumSupportLabel').textContent = window.data.rules[1].minimumSupport + '%';
+    
     const tbody = document.getElementById('itemset2-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
     
-    const itemset2 = getItemset2();
     let data = null;
-    if(document.getElementById('filterMinimumSupportItemset2').checked) {
+    if(document.getElementById('itemset2MinimumSupportFilter').checked) {
         data = itemset2.selected;
     } else {
         data = itemset2.all;
     }
 
+    let number = 0;
     data.forEach(v => {
+        number++;
         const tr = document.createElement('tr');
         tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
             <td>
                 ${v.ids}
             </td>
@@ -504,6 +559,122 @@ function refreshItemset2() {
     });
 }
 
-document.getElementById('filterMinimumSupportItemset2').addEventListener('change', function(event) {
+document.getElementById('itemset2MinimumSupportFilter').addEventListener('change', function(event) {
     refreshItemset2();
+});
+
+// Itemset 3
+function getItemset3() {
+    let allItemset3 = [];
+    let selectedItemset3 = [];
+
+    itemset2.selected.forEach(val1 => {
+        window.data.items.forEach(val2 => {
+            if(!val1.ids.includes(val2.id)) {
+                let tempIds = val1.ids.slice(0);
+                tempIds.push(val2.id);
+                let tempTotalTransaction = getTotalTransaction([val1.ids[0], val2.id]);
+                let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+
+                let obj = {
+                    ids : tempIds,
+                    totalTransaction : tempTotalTransaction,
+                    support : tempSupport
+                }
+
+                allItemset3.push(obj);
+                if(tempSupport >= window.data.rules[2].minimumSupport) {
+                    selectedItemset3.push(obj);
+                }
+            }
+        })
+    });
+
+    return {
+        all : allItemset3,
+        selected : selectedItemset3
+    };
+}
+
+function refreshItemset3() {
+    itemset3 = getItemset3();
+
+    document.getElementById('itemset3AllCombination').textContent = itemset3.all.length;
+    document.getElementById('itemset3SelectedCombination').textContent = itemset3.selected.length;
+    document.getElementById('itemset3MinimumSupportLabel').textContent = window.data.rules[2].minimumSupport + '%';
+
+    const tbody = document.getElementById('itemset3-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+    
+    let data = null;
+    if(document.getElementById('itemset3MinimumSupportFilter').checked) {
+        data = itemset3.selected;
+    } else {
+        data = itemset3.all;
+    }
+
+    data.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction}
+            </td>
+            <td>
+                ${v.support}%
+            </td>
+        `;
+        if(v.support >= window.data.rules[2].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('itemset3MinimumSupportFilter').addEventListener('change', function(event) {
+    refreshItemset3();
+});
+
+let importedData = null;
+document.getElementById('import').addEventListener('change', function(event) {
+    let fileReader = new FileReader();
+    fileReader.onload = function(eventReader) {
+        let obj = JSON.parse(eventReader.target.result);
+        importedData = obj;
+    };
+    fileReader.readAsText(event.target.files[0]);
+
+});
+
+document.getElementById('loadImport').addEventListener('click', function(event) {
+    if(document.getElementById("import").files.length == 0 ){
+        showToast('File tidak ada');
+        return;
+    }
+
+    data = importedData;
+    showToast('Berhasil mengimport data');
+    refreshData();
+});
+
+document.getElementById('export').addEventListener('click', function(event){
+    let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.data));
+    let a = document.createElement('a');
+    a.style.display = 'none';
+    a.setAttribute("href", data);
+    a.setAttribute("download", "data.json");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+});
+
+document.getElementById('reset').addEventListener('click', function(event) {
+    window.data.items = [];
+    window.data.transactions = [];
+
+    showToast('Berhasil mereset data');
+
+    refreshData();
 });
