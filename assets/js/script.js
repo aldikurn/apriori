@@ -59,6 +59,10 @@ function getTotalTransaction(itemsId) {
     return count;
 }
 
+function getSupport(transactionCount) {
+    return parseInt(transactionCount / window.data.transactions.length * 100);
+}
+
 // Rule
 let selectedRuleID = null;
 let ruleEditForm = document.forms['ruleEditForm'];
@@ -70,9 +74,6 @@ function refreshDataRule() {
     window.data.rules.forEach(element => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>
-                ${element.id}
-            </td>
             <td>
                 ${element.name}
             </td>
@@ -119,22 +120,27 @@ function refreshDataitem() {
     document.getElementById('totalItems').textContent = window.data.items.length;
     const tbody = document.getElementById('items-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
-    window.data.items.forEach(element => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>
-                ${element.id}
-            </td>
-            <td>
-                ${element.name}
-            </td>
-            <td>
-                <button onclick="editItem('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
-                <button onclick="deleteItem('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+    
+    if(window.data.items.length > 0 ) {
+        window.data.items.forEach(element => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    ${element.id}
+                </td>
+                <td>
+                    ${element.name}
+                </td>
+                <td>
+                    <button onclick="editItem('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
+                    <button onclick="deleteItem('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } else {
+        tbody.innerHTML = `<td colspan="3" style="text-align: center;">Data Kosong</td>`;
+    }
 }
 
 document.getElementById('showAddItemModalButton').addEventListener('click', function(event) {
@@ -219,22 +225,27 @@ function refreshDataTransaction() {
     document.getElementById('totalTransaction').textContent = window.data.transactions.length;
     const tbody = document.getElementById('transactions-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
-    window.data.transactions.forEach(element => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>
-                ${element.id}
-            </td>
-            <td>
-                ${element.itemsId}
-            </td>
-            <td>
-                <button onclick="editTransaction('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
-                <button onclick="deleteTransaction('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+
+    if(window.data.transactions.length > 0) {
+        window.data.transactions.forEach(element => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    ${element.id}
+                </td>
+                <td>
+                    ${element.itemsId}
+                </td>
+                <td>
+                    <button onclick="editTransaction('${element.id}')" class="btn btn-sm btn-outline-info">Edit</button>
+                    <button onclick="deleteTransaction('${element.id}')" class="btn btn-sm btn-outline-danger">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } else {
+        tbody.innerHTML = `<td colspan="3" style="text-align: center;">Data Kosong</td>`;
+    }
 }
 
 document.getElementById('showAddTransactionModalButton').addEventListener('click', function(event) {
@@ -381,7 +392,7 @@ function getItemset1() {
 
     window.data.items.forEach(element => {
         let tempTotalTransaction = getTotalTransaction([element.id]);
-        let tempSupport = parseInt(tempTotalTransaction / window.data.transactions.length * 100);
+        let tempSupport = getSupport(tempTotalTransaction);
 
         let obj = {
             ids : [element.id],
@@ -421,7 +432,7 @@ function refreshItemset1() {
     itemset1 = getItemset1();
 
     document.getElementById('itemset1AllCombination').textContent = itemset1.all.length;
-    document.getElementById('itemset1SelectedCombination').textContent = itemset1.selected.length;
+    Array.from(document.getElementsByClassName('itemset1SelectedCombination')).forEach(v => v.textContent = itemset1.selected.length);
     document.getElementById('itemset1MinimumSupportLabel').textContent = window.data.rules[0].minimumSupport + '%';
 
     const tbody = document.getElementById('itemset1-table').getElementsByTagName('tbody')[0];
@@ -438,6 +449,13 @@ function refreshItemset1() {
     data.forEach(v => {
         number++;
         const tr = document.createElement('tr');
+        let btnListColor = null;
+        if(v.support >= window.data.rules[0].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+            btnListColor = 'btn-outline-light';
+        } else {
+            btnListColor = 'btn-outline-dark';
+        }
         tr.innerHTML = `
             <td>
                 ${number}
@@ -447,16 +465,41 @@ function refreshItemset1() {
             </td>
             <td>
                 ${v.totalTransaction}
+                <button onclick="showItemset1DetailTransaction('${v.ids}')" class="btn btn-sm ${btnListColor}">Show List</button>
             </td>
             <td>
                 ${v.support}%
             </td>
         `;
-        if(v.support >= window.data.rules[0].minimumSupport) {
-            tr.classList.add('bg-success', 'text-white');
-        }
+        
         tbody.appendChild(tr);
     });
+}
+
+function showItemset1DetailTransaction(itemsId) {
+    itemsId = itemsId.split(',');
+    document.getElementById('itemset1DetailTransactionTitle').textContent = itemsId;
+    const filteredTransactions = window.data.transactions.filter(vTransaction => itemsId.every(vItemsId => vTransaction.itemsId.includes(vItemsId)));
+    let number = 0;
+    const tbody = document.querySelector('#itemset1DetailTransactionTable tbody');
+    tbody.innerHTML = '';
+    filteredTransactions.forEach(v => {
+        number++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
+            <td>
+                ${v.id}
+            </td>
+            <td>
+                ${v.itemsId}
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    $('#itemset1DetailTransactionModal').modal('show');
 }
 
 document.getElementById('itemset1MinimumSupportFilter').addEventListener('change', function(event) {
@@ -468,43 +511,29 @@ function getItemset2() {
     let allItemset2 = [];
     let selectedItemset2 = [];
 
-    // for(i = 0; i < itemset1.selected.length; i++) {
-    //     for(j = window.data.items.findIndex(x => x.id === itemset1.selected[i].ids[0]) + 1; i < window.data.items.length; j++) {
-    //         let tempIds = itemset1.selected[i].ids.slice(0);
-    //         tempIds.push(window.data.items[j].id);
-    //         let tempTotalTransaction = getTotalTransaction([itemset1.selected[i].ids[0], window.data.items[j].id]);
-    //         let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+    itemset1.selected.forEach(vItemset1 => {
+        window.data.items.forEach(vItems => {
+            if(!vItemset1.ids.includes(vItems.id)) {
+                const tempIds = vItemset1.ids.slice();
+                tempIds.push(vItems.id);
+                const sortedTempids = tempIds.slice().sort();
 
-    //         let obj = {
-    //             ids : tempIds,
-    //             totalTransaction : tempTotalTransaction,
-    //             support : tempSupport
-    //         }
+                let exist  = allItemset2.map(v => v.ids).some(v => JSON.stringify(v) === JSON.stringify(sortedTempids));
 
-    //         allItemset2.push(obj);
-    //         if(tempSupport >= window.data.rules[1].minimumSupport) {
-    //             selectedItemset2.push(obj);
-    //         }
-    //     }
-    // }
+                if(!exist) {
+                    let tempTotalTransaction = getTotalTransaction(tempIds);
+                    let tempSupport = getSupport(tempTotalTransaction);
 
-    itemset1.selected.forEach(val1 => {
-        window.data.items.forEach(val2 => {
-            if(val1.ids[0] !== val2.id) {
-                let tempIds = val1.ids.slice(0);
-                tempIds.push(val2.id);
-                let tempTotalTransaction = getTotalTransaction([val1.ids[0], val2.id]);
-                let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+                    let obj = {
+                        ids : tempIds,
+                        totalTransaction : tempTotalTransaction,
+                        support : tempSupport
+                    }
 
-                let obj = {
-                    ids : tempIds,
-                    totalTransaction : tempTotalTransaction,
-                    support : tempSupport
-                }
-
-                allItemset2.push(obj);
-                if(tempSupport >= window.data.rules[1].minimumSupport) {
-                    selectedItemset2.push(obj);
+                    allItemset2.push(obj);
+                    if(tempSupport >= window.data.rules[1].minimumSupport) {
+                        selectedItemset2.push(obj);
+                    }
                 }
             }
         })
@@ -521,7 +550,7 @@ function refreshItemset2() {
     itemset2 = getItemset2();
 
     document.getElementById('itemset2AllCombination').textContent = itemset2.all.length;
-    document.getElementById('itemset2SelectedCombination').textContent = itemset2.selected.length;
+    Array.from(document.getElementsByClassName('itemset2SelectedCombination')).forEach(v => v.textContent = itemset2.selected.length);
     document.getElementById('itemset2MinimumSupportLabel').textContent = window.data.rules[1].minimumSupport + '%';
     
     const tbody = document.getElementById('itemset2-table').getElementsByTagName('tbody')[0];
@@ -568,23 +597,29 @@ function getItemset3() {
     let allItemset3 = [];
     let selectedItemset3 = [];
 
-    itemset2.selected.forEach(val1 => {
-        window.data.items.forEach(val2 => {
-            if(!val1.ids.includes(val2.id)) {
-                let tempIds = val1.ids.slice(0);
-                tempIds.push(val2.id);
-                let tempTotalTransaction = getTotalTransaction([val1.ids[0], val2.id]);
-                let tempSupport = tempTotalTransaction / window.data.transactions.length * 100;
+    itemset2.selected.forEach(vItemset2 => {
+        window.data.items.forEach(vItems => {
+            if(!vItemset2.ids.includes(vItems.id)) {
+                const tempIds = vItemset2.ids.slice();
+                tempIds.push(vItems.id);
+                const sortedTempids = tempIds.slice().sort();
 
-                let obj = {
-                    ids : tempIds,
-                    totalTransaction : tempTotalTransaction,
-                    support : tempSupport
-                }
+                let exist  = allItemset3.map(v => v.ids).some(v => JSON.stringify(v.sort()) === JSON.stringify(sortedTempids));
 
-                allItemset3.push(obj);
-                if(tempSupport >= window.data.rules[2].minimumSupport) {
-                    selectedItemset3.push(obj);
+                if(!exist) {
+                    let tempTotalTransaction = getTotalTransaction(tempIds);
+                    let tempSupport = getSupport(tempTotalTransaction);
+
+                    let obj = {
+                        ids : tempIds,
+                        totalTransaction : tempTotalTransaction,
+                        support : tempSupport
+                    }
+
+                    allItemset3.push(obj);
+                    if(tempSupport >= window.data.rules[2].minimumSupport) {
+                        selectedItemset3.push(obj);
+                    }
                 }
             }
         })
@@ -600,7 +635,7 @@ function refreshItemset3() {
     itemset3 = getItemset3();
 
     document.getElementById('itemset3AllCombination').textContent = itemset3.all.length;
-    document.getElementById('itemset3SelectedCombination').textContent = itemset3.selected.length;
+    Array.from(document.getElementsByClassName('itemset3SelectedCombination')).forEach(v => v.textContent = itemset3.selected.length);
     document.getElementById('itemset3MinimumSupportLabel').textContent = window.data.rules[2].minimumSupport + '%';
 
     const tbody = document.getElementById('itemset3-table').getElementsByTagName('tbody')[0];
@@ -613,9 +648,14 @@ function refreshItemset3() {
         data = itemset3.all;
     }
 
+    let number = 0;
     data.forEach(v => {
+        number++;
         const tr = document.createElement('tr');
         tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
             <td>
                 ${v.ids}
             </td>

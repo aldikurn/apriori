@@ -44,7 +44,7 @@
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="hitung-apriori-tab" data-toggle="tab" href="#hitung-apriori" role="tab"
-          aria-controls="hitung-apriori" aria-selected="false">Hitung Apriori</a>
+          aria-controls="hitung-apriori" aria-selected="false">Apriori</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="setting-tab" data-toggle="tab" href="#setting" role="tab" aria-controls="setting"
@@ -59,7 +59,6 @@
           <div class="col-8">
             <table id="rules-table" class="table table-hover">
               <thead>
-                <th>ID</th>
                 <th>Nama</th>
                 <th>Minimum Support</th>
                 <th>Aksi</th>
@@ -306,11 +305,11 @@
           <div class="col-2">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="v-pills-itemset1-tab" data-toggle="pill" href="#v-pills-itemset1" role="tab"
-                aria-controls="v-pills-itemset1" aria-selected="true">Itemset 1 <span id="itemset1SelectedCombination" class="badge badge-light">0</span></a>
+                aria-controls="v-pills-itemset1" aria-selected="true">Itemset 1 <span class="itemset1SelectedCombination badge badge-light">0</span></a>
               <a class="nav-link" id="v-pills-itemset2-tab" data-toggle="pill" href="#v-pills-itemset2" role="tab"
-                aria-controls="v-pills-itemset2" aria-selected="false">Itemset 2 <span id="itemset2SelectedCombination" class="badge badge-primary">0</span></a>
+                aria-controls="v-pills-itemset2" aria-selected="false">Itemset 2 <span class="itemset2SelectedCombination badge badge-primary">0</span></a>
               <a class="nav-link" id="v-pills-itemset3-tab" data-toggle="pill" href="#v-pills-itemset3" role="tab"
-                aria-controls="v-pills-itemset3" aria-selected="false">Itemset 3 <span id="itemset2SelectedCombination" class="badge badge-primary">0</span></a>
+                aria-controls="v-pills-itemset3" aria-selected="false">Itemset 3 <span class="itemset3SelectedCombination badge badge-primary">0</span></a>
             </div>
           </div>
           <div class="col-8">
@@ -322,9 +321,13 @@
                   <div class="col-12">
                     <div class="d-flex flex-column">
                       <span>
-                        Total Kombinasi : 
+                        Total kombinasi : 
                         <span id="itemset1AllCombination"></span>
                       </span>
+                       <span>
+                         Total kombinasi memenuhi support :
+                         <span class="itemset1SelectedCombination"></span>
+                       </span>
                       <div class="form-check" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset1MinimumSupportFilter">
                         <label class="form-check-label" for="itemset1MinimumSupportFilter">
@@ -335,7 +338,7 @@
                     <table id="itemset1-table" class="table table-hover">
                       <thead>
                         <th>No.</th>
-                        <th>Rule / Kombinasi</th>
+                        <th>Kombinasi</th>
                         <th>Jumlah Transaksi</th>
                         <th>Support</th>
                       </thead>
@@ -343,6 +346,34 @@
                     </table>
                   </div>
                 </div>
+
+                <!-- Itemset 1 table detail transaction -->
+                <div class="modal fade" id="itemset1DetailTransactionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" >List Transaksi <span id="itemset1DetailTransactionTitle"></span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <table id="itemset1DetailTransactionTable" class="table table-hover">
+                          <thead>
+                            <th>No.</th>
+                            <th>ID Transaksi</th>
+                            <th>Daftar Barang</th>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
               </div>
               <div class="tab-pane fade" id="v-pills-itemset2" role="tabpanel" aria-labelledby="v-pills-itemset2-tab">
                 <!-- Itemset 2 Table -->
@@ -350,12 +381,12 @@
                   <div class="col-12">
                     <div class="d-flex flex-column">
                       <span>
-                        Total Kombinasi : 
+                        Total kombinasi : 
                         <span id="itemset2AllCombination"></span>
                       </span>
                       <span>
-                        Kombinasi Terpilih : 
-                        <span id="itemset2SelectedCombination"></span>
+                        Total kombinasi memenuhi support :
+                        <span class="itemset2SelectedCombination"></span>
                       </span>
                       <div class="form-check" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset2MinimumSupportFilter">
@@ -366,7 +397,8 @@
                     </div>
                     <table id="itemset2-table" class="table table-hover">
                       <thead>
-                        <th>Rule / Kombinasi</th>
+                        <th>No.</th>
+                        <th>Kombinasi</th>
                         <th>Jumlah Transaksi</th>
                         <th>Support</th>
                       </thead>
@@ -385,8 +417,8 @@
                         <span id="itemset3AllCombination"></span>
                       </span>
                       <span>
-                        Kombinasi Terpilih : 
-                        <span id="itemset3SelectedCombination"></span>
+                        Total kombinasi memenuhi support :
+                        <span class="itemset3SelectedCombination"></span>
                       </span>
                       <div class="form-check" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset3MinimumSupportFilter">
@@ -397,7 +429,8 @@
                     </div>
                     <table id="itemset3-table" class="table table-hover">
                       <thead>
-                        <th>Rule / Kombinasi</th>
+                        <th>No.</th>
+                        <th>Kombinasi</th>
                         <th>Jumlah Transaksi</th>
                         <th>Support</th>
                       </thead>
@@ -416,7 +449,7 @@
           <div class="form-group">
             <label><strong>Import Data</strong></label>
             <input id="import" type="file" id="import-input" class="form-control-file mb-2" accept="application/JSON">
-            <button id="loadImport" class="btn btn-outline-primary">Load</button>
+            <button id="loadImport" class="btn btn-outline-primary">Import</button>
           </div>
 
           <div class="form-group">
