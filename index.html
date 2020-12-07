@@ -13,7 +13,7 @@
 <body>
   <div class="container" aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
 
-    <div style="position: fixed; top: 1em; right: 1em; z-index: 9999;">
+    <div style="position: fixed; top: 1em; right: 1em;">
       <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
         <div class="toast-header">
           <strong class="mr-auto">Notifikasi</strong>
@@ -41,7 +41,7 @@
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="hitung-apriori-tab" data-toggle="tab" href="#hitung-apriori" role="tab"
-          aria-controls="hitung-apriori" aria-selected="false">Apriori</a>
+          aria-controls="hitung-apriori" aria-selected="false">Itemset</a>
       </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="aturan-asosiasi-tab" data-toggle="tab" href="#aturan-asosiasi" role="tab"
@@ -61,7 +61,7 @@
             <table id="rules-table" class="table table-hover">
               <thead>
                 <th>Nama</th>
-                <th>Minimum Support</th>
+                <th>Minimum</th>
                 <th>Aksi</th>
               </thead>
               <tbody></tbody>
@@ -297,10 +297,6 @@
         </div>
       </div>
 
-      <div class="tab-pane fade" id="aturan-asosiasi" role="tabpanel" aria-labelledby="aturan-asosiasi-tab">
-        Asosiasi Tab
-      </div>
-
       <div class="tab-pane fade" id="hitung-apriori" role="tabpanel" aria-labelledby="hitung-apriori-tab">
         <div class="row mt-1 justify-content-center">
           <div class="col-2">
@@ -439,6 +435,125 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="aturan-asosiasi" role="tabpanel" aria-labelledby="aturan-asosiasi-tab">
+        <div class="row mt-1 justify-content-center">
+          <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <a class="nav-link active" id="v-pills-association2-tab" data-toggle="pill" href="#v-pills-association2"
+                role="tab" aria-controls="v-pills-association2" aria-selected="true">Asosiasi Itemset 2 <span
+                  class="association2SelectedCombination badge badge-light">0</span></a>
+              <a class="nav-link" id="v-pills-association3-tab" data-toggle="pill" href="#v-pills-association3" role="tab"
+                aria-controls="v-pills-association3" aria-selected="false">Asosiasi Itemset 3 <span
+                  class="association3SelectedCombination badge badge-primary">0</span></a>
+              <a class="nav-link" id="v-pills-associationFinal-tab" data-toggle="pill" href="#v-pills-associationFinal" role="tab"
+                aria-controls="v-pills-associationFinal" aria-selected="false">Final Asosiasi <span
+                  class="associationFinalSelectedCombination badge badge-primary">0</span></a>
+            </div>
+          </div>
+          <div class="col-8">
+            <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show active" id="v-pills-association2" role="tabpanel"
+                aria-labelledby="v-pills-association2-tab">
+                <!--Association Itemset 2 Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total kombinasi :
+                        <span id="association2AllCombination"></span>
+                      </span>
+                      <span>
+                        Total kombinasi memenuhi support :
+                        <span class="association2SelectedCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="association2MinimumSupportFilter">
+                        <label class="form-check-label" for="association2MinimumSupportFilter">
+                          Filter by minimum support (<span id="association2MinimumSupportLabel"></span>)
+                        </label>
+                      </div>
+                    </div>
+                    <table id="association2-table" class="table table-hover">
+                      <thead>
+                        <th>No.</th>
+                        <th>Kombinasi</th>
+                        <th>Confidence</th>
+                        <th>Hasil</th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="v-pills-association3" role="tabpanel" aria-labelledby="v-pills-association3-tab">
+                <!-- Itemset 2 Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total kombinasi :
+                        <span id="association3AllCombination"></span>
+                      </span>
+                      <span>
+                        Total kombinasi memenuhi support :
+                        <span class="association3SelectedCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="association3MinimumSupportFilter">
+                        <label class="form-check-label" for="association3MinimumSupportFilter">
+                          Filter by minimum support (<span id="association3MinimumSupportLabel"></span>)
+                        </label>
+                      </div>
+                    </div>
+                    <table id="association3-table" class="table table-hover">
+                      <thead>
+                        <th>No.</th>
+                        <th>Kombinasi</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Support</th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="v-pills-associationFinal" role="tabpanel" aria-labelledby="v-pills-associationFinal-tab">
+                <!-- Itemset 3 Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total Kombinasi :
+                        <span id="associationFinalAllCombination"></span>
+                      </span>
+                      <span>
+                        Total kombinasi memenuhi support :
+                        <span class="associationFinalSelectedCombination"></span>
+                      </span>
+                      <div class="form-check" style="user-select: none;">
+                        <input class="form-check-input" type="checkbox" value="" id="associationFinalMinimumSupportFilter">
+                        <label class="form-check-label" for="associationFinalMinimumSupportFilter">
+                          Filter by minimum support (<span id="associationFinalMinimumSupportLabel"></span>)
+                        </label>
+                      </div>
+                    </div>
+                    <table id="associationFinal-table" class="table table-hover">
+                      <thead>
+                        <th>No.</th>
+                        <th>Kombinasi</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Support</th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
                   </div>
                 </div>
               </div>

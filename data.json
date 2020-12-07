@@ -14,6 +14,16 @@
             "id" : "R3",
             "name" : "Itemset 3",
             "minimumSupport" : 10
+        },
+        {
+            "id" : "R4",
+            "name" : "Asosiasi Itemset 2",
+            "minimumSupport" : 55
+        },
+        {
+            "id" : "R5",
+            "name" : "Asosiasi Itemset 3",
+            "minimumSupport" : 50
         }
     ],
 

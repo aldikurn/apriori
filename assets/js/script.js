@@ -31,6 +31,7 @@ function refreshData() {
     refreshItemset1();
     refreshItemset2();
     refreshItemset3();
+    refreshItemset2Association();
 }
 
 function getIndex(id, array) {
@@ -524,6 +525,7 @@ document.getElementById('itemset1MinimumSupportFilter').addEventListener('change
 function getItemset2() {
     let allItemset2 = [];
     let selectedItemset2 = [];
+    let associationItemset2 = [];
 
     itemset1.selected.forEach(vItemset1 => {
         window.data.items.forEach(vItems => {
@@ -537,16 +539,22 @@ function getItemset2() {
                 if(!exist) {
                     let tempTotalTransaction = getTotalTransaction(tempIds);
                     let tempSupport = getSupport(tempTotalTransaction);
+                    let tempConfidence = parseInt(tempTotalTransaction / vItemset1.totalTransaction * 100);
 
                     let obj = {
                         ids : tempIds,
                         totalTransaction : tempTotalTransaction,
-                        support : tempSupport
+                        totalTransactionA : vItemset1.totalTransaction,
+                        support : tempSupport,
+                        confidence: tempConfidence
                     }
 
                     allItemset2.push(obj);
                     if(tempSupport >= window.data.rules[1].minimumSupport) {
                         selectedItemset2.push(obj);
+                    }
+                    if(tempConfidence >= window.data.rules[3].minimumSupport) {
+                        associationItemset2.push(obj);
                     }
                 }
             }
@@ -555,7 +563,8 @@ function getItemset2() {
 
     return {
         all : allItemset2,
-        selected : selectedItemset2
+        selected : selectedItemset2,
+        association : associationItemset2
     };
 }
 
@@ -742,3 +751,69 @@ document.getElementById('reset').addEventListener('click', function(event) {
 
     refreshData();
 });
+
+
+// ASOSIASI ITEMSET
+
+// v-pills-asosiasi
+let associationNavPills = document.querySelectorAll('#aturan-asosiasi .nav-link');
+associationNavPills.forEach(element => {
+    element.addEventListener('click', function(event) {
+        associationNavPills.forEach(v => {
+            v.getElementsByClassName('badge')[0].classList.remove('badge-light');
+            v.getElementsByClassName('badge')[0].classList.add('badge-primary');
+        });
+
+        element.getElementsByClassName('badge')[0].classList.remove('badge-primary');
+        element.getElementsByClassName('badge')[0].classList.add('badge-light');
+    });
+});
+
+
+// Asosiasi Itemset 2
+function refreshItemset2Association() {
+    document.getElementById('association2AllCombination').textContent = itemset2.selected.length;
+    Array.from(document.getElementsByClassName('association2SelectedCombination')).forEach(v => v.textContent = itemset2.association.length);
+    document.getElementById('association2MinimumSupportLabel').textContent = window.data.rules[3].minimumSupport + '%';
+    
+    const tbody = document.getElementById('association2-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+    
+    let data = null;
+    if(document.getElementById('association2MinimumSupportFilter').checked) {
+        data = itemset2.association;
+    } else {
+        data = itemset2.selected;
+    }
+
+    let number = 0;
+    data.forEach(v => {
+        number++;
+        const tr = document.createElement('tr');
+        if(v.confidence >= window.data.rules[3].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction} / ${v.totalTransactionA} * 100
+            </td>
+            <td>
+                ${v.confidence}%
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('association2MinimumSupportFilter').addEventListener('change', function(event) {
+    refreshItemset2Association();
+});
+
+// Asosiasi Itemset 3
+// Final Asosiasi
