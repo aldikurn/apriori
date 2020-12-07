@@ -32,6 +32,7 @@ function refreshData() {
     refreshItemset2();
     refreshItemset3();
     refreshItemset2Association();
+    refreshItemset3Association();
 }
 
 function getIndex(id, array) {
@@ -624,6 +625,7 @@ document.getElementById('itemset2MinimumSupportFilter').addEventListener('change
 function getItemset3() {
     let allItemset3 = [];
     let selectedItemset3 = [];
+    let associationItemset3 = [];
 
     itemset2.selected.forEach(vItemset2 => {
         window.data.items.forEach(vItems => {
@@ -637,16 +639,22 @@ function getItemset3() {
                 if(!exist) {
                     let tempTotalTransaction = getTotalTransaction(tempIds);
                     let tempSupport = getSupport(tempTotalTransaction);
+                    let tempConfidence = parseInt(tempTotalTransaction / vItemset2.totalTransactionA * 100);
 
                     let obj = {
                         ids : tempIds,
                         totalTransaction : tempTotalTransaction,
-                        support : tempSupport
+                        totalTransactionA : vItemset2.totalTransactionA,
+                        support : tempSupport,
+                        confidence : tempConfidence
                     }
 
                     allItemset3.push(obj);
                     if(tempSupport >= window.data.rules[2].minimumSupport) {
                         selectedItemset3.push(obj);
+                    }
+                    if(tempConfidence >= window.data.rules[4]) {
+                        associationItemset3.push(obj);
                     }
                 }
             }
@@ -655,7 +663,8 @@ function getItemset3() {
 
     return {
         all : allItemset3,
-        selected : selectedItemset3
+        selected : selectedItemset3,
+        association : associationItemset3
     };
 }
 
@@ -816,4 +825,49 @@ document.getElementById('association2MinimumSupportFilter').addEventListener('ch
 });
 
 // Asosiasi Itemset 3
+function refreshItemset3Association() {
+    document.getElementById('association3AllCombination').textContent = itemset3.selected.length;
+    Array.from(document.getElementsByClassName('association3SelectedCombination')).forEach(v => v.textContent = itemset3.association.length);
+    document.getElementById('association3MinimumSupportLabel').textContent = window.data.rules[4].minimumSupport + '%';
+    
+    const tbody = document.getElementById('association3-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+    
+    let data = null;
+    if(document.getElementById('association3MinimumSupportFilter').checked) {
+        data = itemset3.association;
+    } else {
+        data = itemset3.selected;
+    }
+
+    let number = 0;
+    data.forEach(v => {
+        number++;
+        const tr = document.createElement('tr');
+        if(v.confidence >= window.data.rules[4].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction} / ${v.totalTransactionA} * 100
+            </td>
+            <td>
+                ${v.confidence}%
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+document.getElementById('association3MinimumSupportFilter').addEventListener('change', function(event) {
+    refreshItemset3Association();
+});
+
+
 // Final Asosiasi
