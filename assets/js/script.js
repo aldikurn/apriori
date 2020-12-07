@@ -465,20 +465,27 @@ function refreshItemset1() {
             </td>
             <td>
                 ${v.totalTransaction}
-                <button onclick="showItemset1DetailTransaction('${v.ids}')" class="btn btn-sm ${btnListColor}">Show List</button>
+                <button onclick="showItemsetDetailTransaction('${v.ids}')" class="btn btn-sm ${btnListColor}">Show List</button>
             </td>
             <td>
                 ${v.support}%
             </td>
         `;
-        
         tbody.appendChild(tr);
     });
 }
 
-function showItemset1DetailTransaction(itemsId) {
+function showItemsetDetailTransaction(itemsId) {
     itemsId = itemsId.split(',');
-    document.getElementById('itemset1DetailTransactionTitle').textContent = itemsId;
+    const title = document.getElementById('itemset1DetailTransactionTitle');
+    title.innerHTML = '';
+    const badgeColor = ['badge-success', 'badge-info', 'badge-danger'];
+    for(i = 0; i < itemsId.length; i++) {
+        const badge = document.createElement('span');
+        badge.innerHTML = itemsId[i];
+        badge.classList.add('badge', badgeColor[i], 'mr-1');
+        title.appendChild(badge);
+    }
     const filteredTransactions = window.data.transactions.filter(vTransaction => itemsId.every(vItemsId => vTransaction.itemsId.includes(vItemsId)));
     let number = 0;
     const tbody = document.querySelector('#itemset1DetailTransactionTable tbody');
@@ -493,13 +500,20 @@ function showItemset1DetailTransaction(itemsId) {
             <td>
                 ${v.id}
             </td>
-            <td>
-                ${v.itemsId}
-            </td>
         `;
+        v.itemsId.forEach(v => {
+            if(itemsId.includes(v)) {   
+                const badge = document.createElement('span');
+                badge.innerHTML = v;
+                badge.classList.add('badge', badgeColor[itemsId.indexOf(v)], 'mr-1');
+                tr.appendChild(badge);
+            } else {
+                tr.append(v + ' ');
+            }
+        });
         tbody.appendChild(tr);
     });
-    $('#itemset1DetailTransactionModal').modal('show');
+    $('#itemsetDetailTransactionModal').modal('show');
 }
 
 document.getElementById('itemset1MinimumSupportFilter').addEventListener('change', function(event) {
@@ -567,6 +581,13 @@ function refreshItemset2() {
     data.forEach(v => {
         number++;
         const tr = document.createElement('tr');
+        let btnListColor = null;
+        if(v.support >= window.data.rules[1].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+            btnListColor = 'btn-outline-light';
+        } else {
+            btnListColor = 'btn-outline-dark';
+        }
         tr.innerHTML = `
             <td>
                 ${number}
@@ -576,14 +597,12 @@ function refreshItemset2() {
             </td>
             <td>
                 ${v.totalTransaction}
+                <button onclick="showItemsetDetailTransaction('${v.ids}')" class="btn btn-sm ${btnListColor}">Show List</button>
             </td>
             <td>
                 ${v.support}%
             </td>
         `;
-        if(v.support >= window.data.rules[1].minimumSupport) {
-            tr.classList.add('bg-success', 'text-white');
-        }
         tbody.appendChild(tr);
     });
 }
@@ -652,6 +671,13 @@ function refreshItemset3() {
     data.forEach(v => {
         number++;
         const tr = document.createElement('tr');
+        let btnListColor = null;
+        if(v.support >= window.data.rules[2].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+            btnListColor = 'btn-outline-light';
+        } else {
+            btnListColor = 'btn-outline-dark';
+        }
         tr.innerHTML = `
             <td>
                 ${number}
@@ -661,14 +687,12 @@ function refreshItemset3() {
             </td>
             <td>
                 ${v.totalTransaction}
+                <button onclick="showItemsetDetailTransaction('${v.ids}')" class="btn btn-sm ${btnListColor}">Show List</button>
             </td>
             <td>
                 ${v.support}%
             </td>
         `;
-        if(v.support >= window.data.rules[2].minimumSupport) {
-            tr.classList.add('bg-success', 'text-white');
-        }
         tbody.appendChild(tr);
     });
 }
