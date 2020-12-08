@@ -503,16 +503,18 @@ function showItemsetDetailTransaction(itemsId) {
                 ${v.id}
             </td>
         `;
+        const td = document.createElement('td');
         v.itemsId.forEach(v => {
             if(itemsId.includes(v)) {   
                 const badge = document.createElement('span');
                 badge.innerHTML = v;
                 badge.classList.add('badge', badgeColor[itemsId.indexOf(v)], 'mr-1');
-                tr.appendChild(badge);
+                td.appendChild(badge);
             } else {
-                tr.append(v + ' ');
+                td.append(v + ' ');
             }
         });
+        tr.appendChild(td);
         tbody.appendChild(tr);
     });
     $('#itemsetDetailTransactionModal').modal('show');
