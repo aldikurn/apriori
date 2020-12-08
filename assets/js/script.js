@@ -212,6 +212,9 @@ function deleteItem(id) {
 document.querySelector('#itemDeleteModal .deleteButton').addEventListener('click', function(event) {
     index = getIndex(selectedItemID, window.data.items);
     window.data.items.splice(index, 1);
+    window.data.transactions.forEach(v1 => {
+        v1.itemsId = v1.itemsId.filter(v2 => v2 !== selectedItemID)
+    })
 
     $('#itemDeleteModal').modal('hide');
     showToast('Berhasil menghapus barang');
