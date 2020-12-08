@@ -4,12 +4,24 @@ window.data = null;
 //     return 'Dialog text here.';
 //  };
 
-fetch('data.json')
-  .then(response => response.json())
-  .then(data => {
-      window.data = data;
-      refreshData();
-  });
+window.addEventListener('DOMContentLoaded', function(event) {
+    if(localStorage.hasOwnProperty('dataApriori')) {
+        window.data = JSON.parse(atob(localStorage.getItem('dataApriori')));
+        refreshData();
+    } else {
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                window.data = data;
+                refreshData();
+            });   
+    }
+});
+
+
+function saveToLocalStorage() {
+    localStorage.setItem('dataApriori', btoa(JSON.stringify(window.data)));
+}
 
 document.getElementById('import').addEventListener('click', function(e) {
     let files = document.getElementById('import-input').files;
@@ -25,6 +37,7 @@ document.getElementById('import').addEventListener('click', function(e) {
 });
 
 function refreshData() {
+    saveToLocalStorage();
     refreshDataRule();
     refreshDataitem();
     refreshDataTransaction();
