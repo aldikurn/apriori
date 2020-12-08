@@ -467,6 +467,9 @@
               <a class="nav-link" id="v-pills-association3-tab" data-toggle="pill" href="#v-pills-association3" role="tab"
                 aria-controls="v-pills-association3" aria-selected="false">Asosiasi 3 <span
                   class="association3SelectedCombination badge badge-primary">0</span></a>
+              <a class="nav-link" id="v-pills-associationFinal-tab" data-toggle="pill" href="#v-pills-associationFinal" role="tab"
+                aria-controls="v-pills-associationFinal" aria-selected="false">Asosiasi Final <span
+                  class="associationFinalAllCombination badge badge-primary">0</span></a>
             </div>
           </div>
           <div class="col-md-9">
@@ -507,7 +510,7 @@
                 </div>
               </div>
               <div class="tab-pane fade" id="v-pills-association3" role="tabpanel" aria-labelledby="v-pills-association3-tab">
-                <!-- Itemset 2 Table -->
+                <!-- Association 2 Table -->
                 <div class="row justify-content-center">
                   <div class="col-12">
                     <div class="d-flex flex-column">
@@ -528,6 +531,30 @@
                     </div>
                     <div class="table-container">
                       <table id="association3-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Confidence</th>
+                          <th>Hasil</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="v-pills-associationFinal" role="tabpanel" aria-labelledby="v-pills-associationFinal-tab">
+                <!-- Association Final Table -->
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="d-flex flex-column">
+                      <span>
+                        Total :
+                        <span class="associationFinalAllCombination"></span>
+                      </span>
+                    </div>
+                    <div class="table-container">
+                      <table id="associationFinal-table" class="table table-hover">
                         <thead>
                           <th>No.</th>
                           <th>Kombinasi</th>

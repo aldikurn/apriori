@@ -33,6 +33,7 @@ function refreshData() {
     refreshItemset3();
     refreshItemset2Association();
     refreshItemset3Association();
+    refreshItemsetFinalAssociation();
 }
 
 function getIndex(id, array) {
@@ -658,7 +659,7 @@ function getItemset3() {
                     if(tempSupport >= window.data.rules[2].minimumSupport) {
                         selectedItemset3.push(obj);
                     }
-                    if(tempConfidence >= window.data.rules[4]) {
+                    if(tempConfidence >= window.data.rules[4].minimumSupport) {
                         associationItemset3.push(obj);
                     }
                 }
@@ -876,3 +877,55 @@ document.getElementById('association3MinimumSupportFilter').addEventListener('ch
 
 
 // Final Asosiasi
+function refreshItemsetFinalAssociation() {
+    // document.getElementById('associationFinalAllCombination').textContent = itemset3.selected.length;
+    Array.from(document.getElementsByClassName('associationFinalAllCombination')).forEach(v => v.textContent = itemset2.association.length + itemset3.association.length);
+    // document.getElementById('associationFinalMinimumSupportLabel').textContent = window.data.rules[4].minimumSupport + '%';
+    
+    const tbody = document.getElementById('associationFinal-table').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+    
+    // let data = null;
+    // if(document.getElementById('associationFinalMinimumSupportFilter').checked) {
+    //     data = itemset2.association.concat(itemset3.association);
+
+
+    //     // data = itemset2.association.slice();
+    //     // data.push(itemset3.association.slice());
+    // } else {
+    //     data = itemset2.selected.concat(itemset3.selected);
+
+    //     // data = itemset2.selected.slice();
+    //     // data.push(itemset3.selected.slice());
+    // }
+
+    let data = itemset2.association.concat(itemset3.association);
+
+    let number = 0;
+    data.forEach(v => {
+        number++;
+        const tr = document.createElement('tr');
+        if(v.confidence >= window.data.rules[4].minimumSupport) {
+            tr.classList.add('bg-success', 'text-white');
+        }
+        tr.innerHTML = `
+            <td>
+                ${number}
+            </td>
+            <td>
+                ${v.ids}
+            </td>
+            <td>
+                ${v.totalTransaction} / ${v.totalTransactionA} * 100
+            </td>
+            <td>
+                ${v.confidence}%
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// document.getElementById('associationFinalMinimumSupportFilter').addEventListener('change', function(event) {
+//     refreshItemsetFinalAssociation();
+// });
