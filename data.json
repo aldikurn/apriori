@@ -17,12 +17,12 @@
         },
         {
             "id" : "R4",
-            "name" : "Asosiasi Itemset 2",
+            "name" : "Asosiasi 2",
             "minimumSupport" : 55
         },
         {
             "id" : "R5",
-            "name" : "Asosiasi Itemset 3",
+            "name" : "Asosiasi 3",
             "minimumSupport" : 50
         }
     ],

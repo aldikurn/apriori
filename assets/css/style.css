@@ -1,3 +1,11 @@
-body, .tab-content {
-    padding: .5em;
+body {
+    padding: 1em;
+}
+
+.table-container {
+    overflow: auto;
+}
+
+td {
+    white-space: nowrap;
 }

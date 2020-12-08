@@ -25,29 +25,29 @@
       </div>
     </div>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+      <li class="nav-item " role="presentation">
         <a class="nav-link active" id="rule-tab" data-toggle="tab" href="#rule" role="tab" aria-controls="rule"
           aria-selected="true">Rule <span id="totalRule" class="badge badge-primary"></span></a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item " role="presentation">
         <a class="nav-link" id="items-tab" data-toggle="tab" href="#items" role="tab" aria-controls="items"
           aria-selected="false">Data Barang <span id="totalItems" class="badge badge-primary"></span></a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item " role="presentation">
         <a class="nav-link" id="transaction-tab" data-toggle="tab" href="#transaction" role="tab"
           aria-controls="transaction" aria-selected="false">Transaksi <span id="totalTransaction"
             class="badge badge-primary"></span></a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item " role="presentation">
         <a class="nav-link" id="hitung-apriori-tab" data-toggle="tab" href="#hitung-apriori" role="tab"
           aria-controls="hitung-apriori" aria-selected="false">Itemset</a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item " role="presentation">
         <a class="nav-link" id="aturan-asosiasi-tab" data-toggle="tab" href="#aturan-asosiasi" role="tab"
           aria-controls="aturan-asosiasi" aria-selected="false"></span>Asosiasi</a>
       </li>
-      <li class="nav-item" role="presentation">
+      <li class="nav-item " role="presentation">
         <a class="nav-link" id="setting-tab" data-toggle="tab" href="#setting" role="tab" aria-controls="setting"
           aria-selected="false">Pengaturan</a>
       </li>
@@ -56,16 +56,18 @@
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="rule" role="tabpanel" aria-labelledby="rule-tab">
         <!-- Rules Table -->
-        <div class="row justify-content-center">
-          <div class="col-8">
-            <table id="rules-table" class="table table-hover">
-              <thead>
-                <th>Nama</th>
-                <th>Minimum</th>
-                <th>Aksi</th>
-              </thead>
-              <tbody></tbody>
-            </table>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-container">
+              <table id="rules-table" class="table table-hover">
+                <thead>
+                  <th>Nama</th>
+                  <th>Minimum</th>
+                  <th>Aksi</th>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -106,17 +108,19 @@
 
       <div class="tab-pane fade" id="items" role="tabpanel" aria-labelledby="items-tab">
         <!-- Items Table -->
-        <div class="row justify-content-center">
-          <div class="col-8">
+        <div class="row">
+          <div class="col-md-12">
             <button class="btn btn-outline-success mb-2" id="showAddItemModalButton">Add</button>
-            <table id="items-table" class="table table-hover">
-              <thead>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Aksi</th>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div class="table-container">
+              <table id="items-table" class="table table-hover">
+                <thead>
+                  <th>ID</th>
+                  <th>Nama</th>
+                  <th>Aksi</th>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -200,17 +204,19 @@
 
       <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
         <!-- Transactions Table -->
-        <div class="row justify-content-center">
-          <div class="col-8">
+        <div class="row">
+          <div class="col-md-12">
             <button class="btn btn-outline-success mb-2" id="showAddTransactionModalButton">Add</button>
-            <table id="transactions-table" class="table table-hover">
-              <thead>
-                <th>ID</th>
-                <th>Daftar Pembelian</th>
-                <th>Aksi</th>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div class="table-container">
+              <table id="transactions-table" class="table table-hover">
+                <thead>
+                  <th>ID</th>
+                  <th>Daftar Pembelian</th>
+                  <th>Aksi</th>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -298,8 +304,8 @@
       </div>
 
       <div class="tab-pane fade" id="hitung-apriori" role="tabpanel" aria-labelledby="hitung-apriori-tab">
-        <div class="row mt-1 justify-content-center">
-          <div class="col-2">
+        <div class="row mt-1 ">
+          <div class="col-md-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="v-pills-itemset1-tab" data-toggle="pill" href="#v-pills-itemset1"
                 role="tab" aria-controls="v-pills-itemset1" aria-selected="true">Itemset 1 <span
@@ -312,7 +318,7 @@
                   class="itemset3SelectedCombination badge badge-primary">0</span></a>
             </div>
           </div>
-          <div class="col-8">
+          <div class="col-md-9">
             <div class="tab-content" id="v-pills-tabContent">
               <div class="tab-pane fade show active" id="v-pills-itemset1" role="tabpanel"
                 aria-labelledby="v-pills-itemset1-tab">
@@ -328,22 +334,24 @@
                         Total kombinasi memenuhi support :
                         <span class="itemset1SelectedCombination"></span>
                       </span>
-                      <div class="form-check" style="user-select: none;">
+                      <div class="form-check mt-2" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset1MinimumSupportFilter">
                         <label class="form-check-label" for="itemset1MinimumSupportFilter">
                           Filter by minimum support (<span id="itemset1MinimumSupportLabel"></span>)
                         </label>
                       </div>
                     </div>
-                    <table id="itemset1-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Jumlah Transaksi</th>
-                        <th>Support</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="table-container">
+                      <table id="itemset1-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Jumlah Transaksi</th>
+                          <th>Support</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -360,22 +368,24 @@
                         Total kombinasi memenuhi support :
                         <span class="itemset2SelectedCombination"></span>
                       </span>
-                      <div class="form-check" style="user-select: none;">
+                      <div class="form-check mt-2" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset2MinimumSupportFilter">
                         <label class="form-check-label" for="itemset2MinimumSupportFilter">
                           Filter by minimum support (<span id="itemset2MinimumSupportLabel"></span>)
                         </label>
                       </div>
                     </div>
-                    <table id="itemset2-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Jumlah Transaksi</th>
-                        <th>Support</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="table-container">
+                      <table id="itemset2-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Jumlah Transaksi</th>
+                          <th>Support</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -392,22 +402,24 @@
                         Total kombinasi memenuhi support :
                         <span class="itemset3SelectedCombination"></span>
                       </span>
-                      <div class="form-check" style="user-select: none;">
+                      <div class="form-check mt-2" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="itemset3MinimumSupportFilter">
                         <label class="form-check-label" for="itemset3MinimumSupportFilter">
                           Filter by minimum support (<span id="itemset3MinimumSupportLabel"></span>)
                         </label>
                       </div>
                     </div>
-                    <table id="itemset3-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Jumlah Transaksi</th>
-                        <th>Support</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="table-container">
+                      <table id="itemset3-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Jumlah Transaksi</th>
+                          <th>Support</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -424,14 +436,16 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <table id="itemset1DetailTransactionTable" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>ID Transaksi</th>
-                        <th>Daftar Barang</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="table-container">
+                      <table id="itemset1DetailTransactionTable" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>ID Transaksi</th>
+                          <th>Daftar Barang</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -444,27 +458,24 @@
       </div>
 
       <div class="tab-pane fade" id="aturan-asosiasi" role="tabpanel" aria-labelledby="aturan-asosiasi-tab">
-        <div class="row mt-1 justify-content-center">
-          <div class="col-3">
+        <div class="row mt-1">
+          <div class="col-md-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="v-pills-association2-tab" data-toggle="pill" href="#v-pills-association2"
-                role="tab" aria-controls="v-pills-association2" aria-selected="true">Asosiasi Itemset 2 <span
+                role="tab" aria-controls="v-pills-association2" aria-selected="true">Asosiasi 2 <span
                   class="association2SelectedCombination badge badge-light">0</span></a>
               <a class="nav-link" id="v-pills-association3-tab" data-toggle="pill" href="#v-pills-association3" role="tab"
-                aria-controls="v-pills-association3" aria-selected="false">Asosiasi Itemset 3 <span
+                aria-controls="v-pills-association3" aria-selected="false">Asosiasi 3 <span
                   class="association3SelectedCombination badge badge-primary">0</span></a>
-              <!-- <a class="nav-link" id="v-pills-associationFinal-tab" data-toggle="pill" href="#v-pills-associationFinal" role="tab"
-                aria-controls="v-pills-associationFinal" aria-selected="false">Final Asosiasi <span
-                  class="associationFinalSelectedCombination badge badge-primary">0</span></a> -->
             </div>
           </div>
-          <div class="col-8">
+          <div class="col-md-9">
             <div class="tab-content" id="v-pills-tabContent">
               <div class="tab-pane fade show active" id="v-pills-association2" role="tabpanel"
                 aria-labelledby="v-pills-association2-tab">
                 <!--Association Itemset 2 Table -->
                 <div class="row justify-content-center">
-                  <div class="col-12">
+                  <div class="col-sm-12">
                     <div class="d-flex flex-column">
                       <span>
                         Total kombinasi :
@@ -474,22 +485,24 @@
                         Total kombinasi memenuhi confidence :
                         <span class="association2SelectedCombination"></span>
                       </span>
-                      <div class="form-check" style="user-select: none;">
+                      <div class="form-check mt-2" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="association2MinimumSupportFilter">
                         <label class="form-check-label" for="association2MinimumSupportFilter">
                           Filter by minimum confidence (<span id="association2MinimumSupportLabel"></span>)
                         </label>
                       </div>
                     </div>
-                    <table id="association2-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Confidence</th>
-                        <th>Hasil</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="table-container">
+                      <table id="association2-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Confidence</th>
+                          <th>Hasil</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -506,54 +519,24 @@
                         Total kombinasi memenuhi confidence :
                         <span class="association3SelectedCombination"></span>
                       </span>
-                      <div class="form-check" style="user-select: none;">
+                      <div class="form-check mt-2" style="user-select: none;">
                         <input class="form-check-input" type="checkbox" value="" id="association3MinimumSupportFilter">
                         <label class="form-check-label" for="association3MinimumSupportFilter">
                           Filter by minimum confidence (<span id="association3MinimumSupportLabel"></span>)
                         </label>
                       </div>
                     </div>
-                    <table id="association3-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Confidence</th>
-                        <th>Hasil</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="v-pills-associationFinal" role="tabpanel" aria-labelledby="v-pills-associationFinal-tab">
-                <!-- Itemset 3 Table -->
-                <div class="row justify-content-center">
-                  <div class="col-12">
-                    <div class="d-flex flex-column">
-                      <span>
-                        Total Kombinasi :
-                        <span id="associationFinalAllCombination"></span>
-                      </span>
-                      <span>
-                        Total kombinasi memenuhi support :
-                        <span class="associationFinalSelectedCombination"></span>
-                      </span>
-                      <div class="form-check" style="user-select: none;">
-                        <input class="form-check-input" type="checkbox" value="" id="associationFinalMinimumSupportFilter">
-                        <label class="form-check-label" for="associationFinalMinimumSupportFilter">
-                          Filter by minimum support (<span id="associationFinalMinimumSupportLabel"></span>)
-                        </label>
-                      </div>
+                    <div class="table-container">
+                      <table id="association3-table" class="table table-hover">
+                        <thead>
+                          <th>No.</th>
+                          <th>Kombinasi</th>
+                          <th>Confidence</th>
+                          <th>Hasil</th>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
                     </div>
-                    <table id="associationFinal-table" class="table table-hover">
-                      <thead>
-                        <th>No.</th>
-                        <th>Kombinasi</th>
-                        <th>Jumlah Transaksi</th>
-                        <th>Support</th>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
                   </div>
                 </div>
               </div>
@@ -563,7 +546,7 @@
       </div>
 
       <div class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="setting-tab">
-        <div class="col-sm-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label><strong>Import Data</strong></label>
             <input id="import" type="file" id="import-input" class="form-control-file mb-2" accept="application/JSON">
