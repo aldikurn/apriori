@@ -681,7 +681,7 @@ function getItemset3() {
                 tempIds.push(vItems.id);
                 const sortedTempids = tempIds.slice().sort();
 
-                let exist  = allAssociationItemset3.map(v => v.ids).some(v => JSON.stringify(v.sort()) === JSON.stringify(sortedTempids));
+                let exist  = allAssociationItemset3.map(v => v.ids).some(v => JSON.stringify(v.slice().sort()) === JSON.stringify(sortedTempids));
 
                 if(!exist) {
                     let tempTotalTransaction = getTotalTransaction(tempIds);
