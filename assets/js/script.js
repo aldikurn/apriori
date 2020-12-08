@@ -631,7 +631,8 @@ document.getElementById('itemset2MinimumSupportFilter').addEventListener('change
 function getItemset3() {
     let allItemset3 = [];
     let selectedItemset3 = [];
-    let associationItemset3 = [];
+    let allAssociationItemset3 = [];
+    let selectedAssociationItemset3 = [];
 
     itemset2.selected.forEach(vItemset2 => {
         window.data.items.forEach(vItems => {
@@ -645,32 +646,72 @@ function getItemset3() {
                 if(!exist) {
                     let tempTotalTransaction = getTotalTransaction(tempIds);
                     let tempSupport = getSupport(tempTotalTransaction);
-                    let tempConfidence = parseInt(tempTotalTransaction / vItemset2.totalTransactionA * 100);
+                    // let tempConfidence = parseInt(tempTotalTransaction / vItemset2.totalTransactionA * 100);
 
                     let obj = {
                         ids : tempIds,
                         totalTransaction : tempTotalTransaction,
                         totalTransactionA : vItemset2.totalTransactionA,
                         support : tempSupport,
-                        confidence : tempConfidence
+                        // confidence : tempConfidence
                     }
 
                     allItemset3.push(obj);
                     if(tempSupport >= window.data.rules[2].minimumSupport) {
                         selectedItemset3.push(obj);
+
+                        // let tempConfidence = parseInt(tempTotalTransaction / vItemset2.totalTransactionA * 100);
+                        // obj.confidence = tempConfidence;
+                        // if(tempConfidence >= window.data.rules[4].minimumSupport) {
+                        //     associationItemset3.push(obj);
+                        // }
                     }
+                    // if(tempConfidence >= window.data.rules[4].minimumSupport) {
+                    //     associationItemset3.push(obj);
+                    // }
+                }
+            }
+        })
+    });
+
+    itemset2.association.forEach(vAssoc2 => {
+        window.data.items.forEach(vItems => {
+            if(!vAssoc2.ids.includes(vItems.id)) {
+                const tempIds = vAssoc2.ids.slice();
+                tempIds.push(vItems.id);
+                const sortedTempids = tempIds.slice().sort();
+
+                let exist  = allAssociationItemset3.map(v => v.ids).some(v => JSON.stringify(v.sort()) === JSON.stringify(sortedTempids));
+
+                if(!exist) {
+                    let tempTotalTransaction = getTotalTransaction(tempIds);
+                    let tempSupport = getSupport(tempTotalTransaction);
+                    let tempConfidence = parseInt(tempTotalTransaction / vAssoc2.totalTransactionA * 100);
+
+                    let obj = {
+                        ids : tempIds,
+                        totalTransaction : tempTotalTransaction,
+                        totalTransactionA : vAssoc2.totalTransactionA,
+                        support : tempSupport,
+                        confidence : tempConfidence
+                    }
+
+                    allAssociationItemset3.push(obj);
+
                     if(tempConfidence >= window.data.rules[4].minimumSupport) {
-                        associationItemset3.push(obj);
+                        selectedAssociationItemset3.push(obj);
                     }
                 }
             }
         })
     });
 
+
     return {
         all : allItemset3,
         selected : selectedItemset3,
-        association : associationItemset3
+        allAssociation : allAssociationItemset3,
+        selectedAssociation : selectedAssociationItemset3
     };
 }
 
@@ -832,8 +873,8 @@ document.getElementById('association2MinimumSupportFilter').addEventListener('ch
 
 // Asosiasi Itemset 3
 function refreshItemset3Association() {
-    document.getElementById('association3AllCombination').textContent = itemset3.selected.length;
-    Array.from(document.getElementsByClassName('association3SelectedCombination')).forEach(v => v.textContent = itemset3.association.length);
+    document.getElementById('association3AllCombination').textContent = itemset3.allAssociation.length;
+    Array.from(document.getElementsByClassName('association3SelectedCombination')).forEach(v => v.textContent = itemset3.selectedAssociation.length);
     document.getElementById('association3MinimumSupportLabel').textContent = window.data.rules[4].minimumSupport + '%';
     
     const tbody = document.getElementById('association3-table').getElementsByTagName('tbody')[0];
@@ -841,9 +882,9 @@ function refreshItemset3Association() {
     
     let data = null;
     if(document.getElementById('association3MinimumSupportFilter').checked) {
-        data = itemset3.association;
+        data = itemset3.selectedAssociation;
     } else {
-        data = itemset3.selected;
+        data = itemset3.allAssociation;
     }
 
     let number = 0;
@@ -878,28 +919,12 @@ document.getElementById('association3MinimumSupportFilter').addEventListener('ch
 
 // Final Asosiasi
 function refreshItemsetFinalAssociation() {
-    // document.getElementById('associationFinalAllCombination').textContent = itemset3.selected.length;
-    Array.from(document.getElementsByClassName('associationFinalAllCombination')).forEach(v => v.textContent = itemset2.association.length + itemset3.association.length);
-    // document.getElementById('associationFinalMinimumSupportLabel').textContent = window.data.rules[4].minimumSupport + '%';
+    Array.from(document.getElementsByClassName('associationFinalAllCombination')).forEach(v => v.textContent = itemset2.association.length + itemset3.selectedAssociation.length);
     
     const tbody = document.getElementById('associationFinal-table').getElementsByTagName('tbody')[0];
     tbody.innerHTML = "";
-    
-    // let data = null;
-    // if(document.getElementById('associationFinalMinimumSupportFilter').checked) {
-    //     data = itemset2.association.concat(itemset3.association);
 
-
-    //     // data = itemset2.association.slice();
-    //     // data.push(itemset3.association.slice());
-    // } else {
-    //     data = itemset2.selected.concat(itemset3.selected);
-
-    //     // data = itemset2.selected.slice();
-    //     // data.push(itemset3.selected.slice());
-    // }
-
-    let data = itemset2.association.concat(itemset3.association);
+    let data = itemset2.association.concat(itemset3.selectedAssociation);
 
     let number = 0;
     data.forEach(v => {
@@ -925,7 +950,3 @@ function refreshItemsetFinalAssociation() {
         tbody.appendChild(tr);
     });
 }
-
-// document.getElementById('associationFinalMinimumSupportFilter').addEventListener('change', function(event) {
-//     refreshItemsetFinalAssociation();
-// });
